@@ -10,7 +10,7 @@ Follow these steps to get the application up and running on your local machine.
 
 1. Clone the repository:
 
-   git clone https://github.com/your-username/revivn-pickup-app-ts.git
+   git clone https://github.com/Madhavpokhrel/revivn-pickup-app-ts.git
 
 2. Navigate to the project directory:
 
