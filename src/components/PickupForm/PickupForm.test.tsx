@@ -4,7 +4,7 @@ import PickupForm from "./PickupForm";
 
 test("renders pickup form and handles submission", () => {
   const mockSubmit = jest.fn();
-  render(<PickupForm onSubmit={mockSubmit} />);
+  render(<PickupForm />);
 
   // Fill in form fields
   const dateInput = screen.getByLabelText("Date:") as HTMLInputElement;

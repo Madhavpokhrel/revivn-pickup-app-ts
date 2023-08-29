@@ -18,7 +18,7 @@ test("renders pickup status and checks status correctly", () => {
     },
   ];
 
-  render(<PickupStatus pickupRequests={mockPickupRequests} />);
+  render(<PickupStatus />);
 
   const idInput = screen.getByLabelText("Enter Pickup ID:") as HTMLInputElement;
   const checkButton = screen.getByRole("button", { name: /check status/i });

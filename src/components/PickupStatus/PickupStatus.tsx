@@ -1,9 +1,6 @@
 import React, { useState } from "react";
+import axios from "axios";
 import styles from "./PickupStatus.module.css";
-
-interface PickupStatusProps {
-  pickupRequests: PickupRequest[];
-}
 
 export interface PickupRequest {
   id: number;
@@ -12,20 +9,27 @@ export interface PickupRequest {
   status: string;
 }
 
-const PickupStatus: React.FC<PickupStatusProps> = ({ pickupRequests }) => {
+const PickupStatus: React.FC = () => {
+  // Holds the pickup id that is needed to search for the pickup details
   const [searchId, setSearchId] = useState("");
+  // Holds the pickup status. It can be either two of the following:
+  // 1. Scheduled
+  // 2. Pickup not found
   const [status, setStatus] = useState("");
 
-  const handleSearch = () => {
-    const requestedPickup = pickupRequests.find(
-      (request) => request.id === Number(searchId)
-    );
-    console.log("requestedPickup", requestedPickup);
-    if (requestedPickup) {
-      setStatus(requestedPickup.status);
-    } else {
-      setStatus("Pickup not found");
-    }
+  const handleSearch = async () => {
+    await axios
+      .get(`http://localhost:3000/pickup-request/${searchId}`)
+      .then(function (response) {
+        if (response?.data?.status) {
+          setStatus(response?.data?.status);
+        } else {
+          setStatus("Pickup not found");
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (

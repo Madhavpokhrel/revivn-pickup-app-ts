@@ -1,9 +1,6 @@
 import React, { useState } from "react";
+import axios from "axios";
 import styles from "./PickupForm.module.css";
-
-interface PickupFormProps {
-  onSubmit: (newPickup: PickupRequest) => void;
-}
 
 export interface PickupRequest {
   id: number;
@@ -11,16 +8,35 @@ export interface PickupRequest {
   location: string;
 }
 
-const PickupForm: React.FC<PickupFormProps> = ({ onSubmit }) => {
+const PickupForm: React.FC = () => {
+  // Holds selected date for pickup
   const [date, setDate] = useState("");
+  // Holds selected location for pickup
   const [location, setLocation] = useState("");
+  // Holds unique pickup Id
   const [submittedId, setSubmittedId] = useState<number | null>(null); // Track the submitted ID
 
+  const postPickupRequest = async () => {
+    await axios
+      .post("http://localhost:3000/pickup-request", {
+        date: date,
+        location: location,
+        status: "Scheduled",
+      })
+      .then(function (response) {
+        setSubmittedId(response?.data?.id);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  // Creates a pickup ID which is a date
+  // calls onSubmit function that is being passed as props
+  // stores new pickupId in a state
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const newId = Date.now(); // Generate a unique ID (using current time for simplicity)
-    onSubmit({ id: newId, date, location }); // Include the ID in the submitted data
-    setSubmittedId(newId); // Update the submitted ID state
+    postPickupRequest();
   };
 
   return (
